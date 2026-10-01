@@ -1,0 +1,7 @@
+# Query: Suspicious Web Traffic & Potential Scanning/Enumeration
+# Description: Detects potential web vulnerability scanning or directory enumeration by identifying clients generating high frequencies of HTTP 404 (Not Found) or 403 (Forbidden) error responses.
+
+index=web_traffic (status=404 OR status=403) 
+| stats count as error_count, values(uri) as attempted_uris by client_ip 
+| where error_count > 20 
+| sort - error_count
