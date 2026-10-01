@@ -1,0 +1,7 @@
+# Query: Failed Login Attempts & Potential Brute-Force Detection
+# Description: Identifies source IP addresses generating a high volume of failed authentication events within a specific timeframe.
+
+index=security sourcetype=linux_auth action=failure 
+| stats count as failed_attempts by src_ip user 
+| where failed_attempts > 5 
+| sort - failed_attempts
